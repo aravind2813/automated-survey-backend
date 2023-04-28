@@ -1,13 +1,21 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const { Configuration, OpenAIApi } = require("openai");
 
 const app = express();
 app.set("view engine", "ejs");
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(express.static(__dirname + "/public"));
 
-mongoose.connect("mongodb+srv://aravindben562:7iNigIeUalRlyTSG@cluster0.ayhb0mp.mongodb.net/?retryWrites=true&w=majority&wtimeoutMS=5000/surveyUsersDB");
+const configuration = new Configuration({
+  apiKey: "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",
+});
+const openai = new OpenAIApi(configuration);
+
+
+mongoose.connect("mongodb://0.0.0.0:27017/surveyUsersDB");
+
 
 const userSchema = new mongoose.Schema({
   First_Name : {
@@ -58,7 +66,7 @@ const userSchema = new mongoose.Schema({
     trim : true
   },
   Income_Level : {
-    type : Number
+    type : String
   },
   Marital_Status : {
     type : String,
@@ -66,7 +74,7 @@ const userSchema = new mongoose.Schema({
     trim : true
   },
   No_Of_Children : {
-    type : Number
+    type : String
   },
   Single_Parent : {
     type : String
@@ -134,15 +142,23 @@ const eduSurveySchema = new mongoose.Schema({
   Overall_do_you_think_the_new_education_policy_is_a_step_in_the_right_direction_for_our_country_s_education_system : String
 });
 
-const user = mongoose.model("User",userSchema);
+const elecSurveySchema = new mongoose.Schema({
+  What_electronic_products_do_you_use_on_a_daily_basis : String,
+  How_often_do_you_replace_your_electronic_devices : String,
+  How_important_is_it_for_you_to_have_the_latest_technology_when_purchasing_electronic_products : String,
+  What_features_are_most_important_to_you_when_purchasing_electronic_products : String,
+  What_concerns_do_you_have_about_the_environmental_impact_of_electronic_products : String
+});
 
+const user = mongoose.model("User",userSchema);
 const govSurvey = mongoose.model("govSurvey",govSurveySchema);
 const eduSurvey = mongoose.model("eduSurvey",eduSurveySchema);
+const elecSurvey = mongoose.model("elecSurvey",elecSurveySchema);
 
 app.route("/")
 
 .get(function(req,res){
-  res.send("Hi");
+  res.render("index");
 })
 
 .post(async function(req,res){
@@ -201,13 +217,111 @@ app.route("/")
 
   try{
     await data.save();
-    res.status(200).send("Registered Successfully");
+    res.render("thanks");
+    // res.status(200).send("Registered Successfully");
   }
   catch(err){
     res.status(404).send(err);
   }
 
 });
+
+app.route("/thanks")
+
+.get(async function(req,res){
+  res.render("thanks");
+});
+
+app.route("/generate")
+
+.get(async function(req,res){
+  try{
+    const items = await user.find({});
+    console.log(items);
+    res.send(items);
+  }
+  catch(err){
+    res.send(err);
+  }
+})
+
+.post(async function(req,res){
+  req.setTimeout(50000);
+  const survey = req.body.survey;
+
+  if (!configuration.apiKey) {
+  res.status(500).json({
+    error: {
+      message: "Error : Key not configured, please follow the instructions",
+    }
+  });
+  return;
+}
+
+  const data = await user.find({});
+
+
+    data.forEach(async elt => {
+      const fname = elt.First_Name;
+      const lname = elt.Last_Name;
+      const email = elt.Email_Address;
+      const dob = elt.DateOfBirth;
+      const city = elt.City;
+      const state = elt.State;
+      const country = elt.Country;
+      const education = elt.Highest_Education;
+      const jobtitle = elt.Job_Title;
+      const jobsdescription = elt.Job_Description;
+      const income = elt.Income_Level;
+      const maritalstatus = elt.Marital_Status;
+      const children = elt.No_Of_Children;
+      const single_parent = elt.Single_Parent;
+      const interests = elt.Interests;
+      const hobbies = elt.Hobbies;
+      const mental_issues = elt.Mental_Issues;
+      const physical_issues = elt.Physical_Issues;
+      const social_problems = elt.Social_Problems;
+      const survey_types = elt.Preferred_Survey_Types;
+      const availability = elt.Availabilty;
+      const frequency = elt.Frequency_Of_Surveys;
+      const reasons = elt.Survey_Participation_Reasons;
+      const feedback = elt.Feedback;
+      try {
+        const completion = await openai.createCompletion({
+          model: "text-davinci-003",
+          prompt: generatePrompt(survey, fname, lname, email, dob, city, state, country, education, jobtitle, jobsdescription, income, maritalstatus, children, single_parent, interests, hobbies, mental_issues, physical_issues, social_problems, survey_types, availability, frequency, reasons, feedback),
+          temperature: 0.7,
+        });
+        console.log(completion.data.choices[0].text);
+        // res.status(200).json({ result: completion.data.choices[0].text });
+      } catch(error) {
+        // Consider adjusting the error handling logic for your use case
+        if (error.response) {
+          console.error(error.response.status, error.response.data);
+          res.status(error.response.status).json(error.response.data);
+        } else {
+          console.error(`Error with OpenAI API request: ${error.message}`);
+          res.status(500).json({
+            error: {
+              message: 'An error occurred during your request.',
+            }
+          });
+        }
+      }
+    });
+    res.send("success");
+});
+
+function generatePrompt(survey,fname, lname, email, dob, city, state, country, education, jobtitle, jobsdescription, income, maritalstatus, children, single_parent, interests, hobbies, mental_issues, physical_issues, social_problems, survey_types, availability, frequency, reasons, feedback) {
+  return `I want to select  a user to send a survey related to a particular type and return Yes or No depending upon whether the user is related to the survey type .
+   Type : Politics
+   User Data : "My date of birth is 12-09-2002. I live in Chennai, Tamil Nadu in the country of India. My Highest Education is B.Tech. My Job title is Software Developer. My Job Description is that I have to develop high quality software products. My income level is between 100000 - 200000 per annum. My marital status is married and I have one children . My single parent status is No. My interests include cricket, sports, politics. My hobbies are coding and playing football. My mental health problems are none. My physical health problems are none. my social problems are none. my preferred survey types apart from my interests and background include higher education and travel. I am mostly free on weekends. I prefer surveys to be sent on a max of 3 per week. My reasons for receiving surveys are to help the community people better understand things from common people's perspective. My feedback is to provide interactive feedbacks".
+   Result : Yes
+   Type: ${survey}
+   User Data:  "My date of birth is ${dob}. I live in ${city}, ${state} in the country of ${country}. My Highest Education is ${education}. My Job title is ${jobtitle}. My Job Description is that ${jobsdescription}. My income level is between ${income} per annum. My marital status is ${maritalstatus} and I have ${children} children . My single parent status is ${single_parent}. My interests include ${interests}. My hobbies are ${hobbies}. My mental health problems are ${mental_issues}. My physical health problems are ${physical_issues}. my social problems are ${social_problems}. my preferred survey types apart from my interests and background include ${survey_types}. I am mostly free on ${availability}. I prefer surveys to be sent on a max of ${frequency} per week. My reasons for receiving surveys are ${reasons}. My feedback is ${feedback}"
+   Result :                                                                                                                                                                                              `;
+}
+
 
 app.route("/GovSurvey")
 
@@ -399,6 +513,115 @@ app.route("/EduSurvey")
     Do_you_believe_the_new_education_policy_adequately_addresses_the_needs_of_students_from_marginalized_communities : a3,
     What_do_you_think_about_the_increased_emphasis_on_technology_and_digital_learning_in_the_new_education_policy : a4,
     Overall_do_you_think_the_new_education_policy_is_a_step_in_the_right_direction_for_our_country_s_education_system : a5
+  });
+
+  try{
+    await data.save();
+    res.status(200).send("Recorded Successfully");
+  }
+  catch(err){
+    res.status(404).send(err);
+  }
+});
+
+app.route("/ElecSurvey")
+
+.post(async function(req,res){
+  const q1 = req.body.question1;
+  let a1 = "";
+  switch (q1) {
+    case "Item 1":
+    a1="Smartphones";
+    break;
+    case "Item 2":
+    a1="Tablets";
+    break;
+    case "Item 3":
+    a1="Laptops";
+    break;
+    case "Item 4":
+    a1="Desktop computers";
+    break;
+    case "Item 3":
+    a1="Smart home devices";
+    break;
+  }
+  const q2 = req.body.question2;
+  let a2 = "";
+  switch (q2) {
+    case "Item 1":
+    a2="Every year";
+    break;
+    case "Item 2":
+    a2="Every 2-3 years";
+    break;
+    case "Item 3":
+    a2="Every 4-5 years";
+    break;
+    case "Item 4":
+    a2="I keep my devices until they break or stop working";
+    break;
+  }
+  const q3 = req.body.question3;
+  let a3 ="";
+  switch (q3) {
+    case "Item 1":
+    a3="Very important";
+    break;
+    case "Item 2":
+    a3="Somewhat important";
+    break;
+    case "Item 3":
+    a3="Not very important";
+    break;
+    case "Item 4":
+    a3="Not important at all";
+    break;
+  }
+  const q4 = req.body.question4;
+  let a4 = "";
+  switch (q4) {
+    case "Item 1":
+    a4="Battery life";
+    break;
+    case "Item 2":
+    a4="Processing power and speed";
+    break;
+    case "Item 3":
+    a4="Display/screen quality";
+    break;
+    case "Item 4":
+    a4="Camera quality";
+    break;
+    case "Item 5":
+    a4="Design and aesthetics";
+    break;
+    case "Item 6":
+    a4="Price";
+    break;
+  }
+  const q5 = req.body.question5;
+  let a5 = "";
+  switch (q5) {
+    case "Item 1":
+    a5="E-waste and proper disposal of devices";
+    break;
+    case "Item 2":
+    a5="Energy consumption and carbon footprint";
+    break;
+    case "Item 3":
+    a5="Extraction of rare earth materials and their impact on the environment";
+    break;
+    case "Item 4":
+    a5=" Lack of recycling programs for electronic devices";
+    break;
+  }
+  const data = new elecSurvey({
+    What_electronic_products_do_you_use_on_a_daily_basis : a1,
+    How_often_do_you_replace_your_electronic_devices : a2,
+    How_important_is_it_for_you_to_have_the_latest_technology_when_purchasing_electronic_products : a3,
+    What_features_are_most_important_to_you_when_purchasing_electronic_products : a4,
+    What_concerns_do_you_have_about_the_environmental_impact_of_electronic_products : a5,
   });
 
   try{

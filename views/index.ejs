@@ -1,0 +1,306 @@
+
+<html>
+<head>
+    <title>SurveySparrow</title>
+    <link rel="stylesheet" href="index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <center><h1>SURVEY REGISTRATION</h1>
+    <form>
+      <table>
+        <tr>
+          <td>
+            <label for="fname">Enter your First Name</label>
+          </td>
+          <td>
+            <input type="text" name="fname" id="fname" placeholder="e.g. Aravind">
+          </td>
+        </tr>
+        <hr>
+        <tr>
+          <td>
+            <label for="lname">Enter your Last Name</label>
+          </td>
+          <td>
+            <input type="text" name="lname" id="lname" placeholder="e.g. Ben">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label for="email">Enter your Email</label>
+          </td>
+          <td>
+            <input type="email" name="email" id="email" placeholder="e.g. aravind@gmail.com">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="dob">Enter your D.O.B</label>
+          </td>
+          <td>
+            <input type="date" name="dob" id="dob" placeholder="e.g. 13-09-2002">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="city">Enter your City Name</label>
+          </td>
+          <td>
+            <input type="text" name="city" id="city" placeholder="e.g. Madurai">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="state">Enter your State Name</label>
+          </td>
+          <td>
+            <input type="text" name="state" id="state" placeholder="e.g. Tamil Nadu">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="country">Enter your Country Name</label>
+          </td>
+          <td>
+            <input type="text" name="country" id="country" placeholder="e.g. India">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="hied">Enter your Highest Education</label>
+          </td>
+          <td>
+            <input type="text" name="education" id="hied" placeholder="e.g. SSLC">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="jtit">Enter your Job Title</label>
+          </td>
+          <td>
+            <input type="text" name="jobtitle" id="jtit" placeholder="e.g. Manager">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="jdes">Enter your Job Description</label>
+          </td>
+          <td>
+            <textarea name="jobdescription" id="jdes" cols="40" rows="4"></textarea>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="inle">Enter your Income Level</label>
+          </td>
+          <td>
+            <select id="inle" name="income">
+              <option value="0">0</option>
+              <option value="1k-10k">1,000 to 10,000</option>
+              <option value="10k-100k">10,000 to 1,00,000</option>
+              <option value="100k+">1,00,000+</option>
+          </select>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="mstat">Enter your Martial Status</label>
+          </td>
+          <td>
+            <input type="radio" name="maritalstatus" id="yes" value="yes">
+            <label for="yes">Married</label>
+
+            <input type="radio" name="marital_status" id="no" value="no">
+            <label for="no">Single</label>
+          </td>
+
+        <tr>
+          <td>
+            <label for="hied">Enter Number of Children</label>
+          </td>
+          <td>
+            <input type="radio" name="no_of_children" id="0" value="0">
+            <label for="0">0</label><br>
+
+            <input type="radio" name="no_of_children" id="1" value="1">
+            <label for="1">1</label><br>
+
+            <input type="radio" name="no_of_children" id="2" value="2">
+            <label for="2">2</label><br>
+
+            <input type="radio" name="no_of_children" id="3+" value="3+">
+            <label for="3+">3+</label><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="sipa">Are you a Single Parent?</label>
+          </td>
+          <td>
+            <input type="radio" name="single_parent" id="yes" value="yes">
+            <label for="yes">Yes</label>
+
+            <input type="radio" name="single_parent" id="no" value="no">
+            <label for="no">No</label>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="int">Enter your Interests</label>
+          </td>
+          <td>
+            <input type="text" name="interests" id="int" placeholder="e.g. Designing">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="hob">Enter your Hobbies</label>
+          </td>
+          <td>
+            <input type="text" name="hobbies" id="hob" placeholder="e.g. Photography">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label>Enter your Mental Issue</label>
+          </td>
+          <td>
+            <input type="radio" name="mental_issues" id="dep" value="depression">
+            <label for="dep">Depression</label><br>
+
+            <input type="radio" name="mental_issues" id="andi" value="anxiety disorder">
+            <label for="andi">Anxiety Disorder</label><br>
+
+            <input type="radio" name="mental_issues" id="schi" value="schizopheria">
+            <label for="schi">Schizopheria</label><br>
+
+            <input type="radio" name="mental_issues" id="eatdis" value="eating disorder">
+            <label for="eatdis">Eating Disorder</label><br>
+
+            <input type="radio" name="mental_issues" id="adbe" value="addictive behaviors">
+            <label for="adbe">Addictive Behaviors</label><br>
+
+            <input type="radio" name="mental_issues" id="not" value="nothing">
+            <label for="not">Nothing</label><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label>Enter your Physical Issue</label>
+          </td>
+          <td>
+            <input type="radio" name="physical_issues" id="deaf" value="deaf">
+            <label for="deaf">Deaf</label><br>
+
+            <input type="radio" name="physical_issues" id="blin" value="blind">
+            <label for="blin">Blind</label><br>
+
+            <input type="radio" name="physical_issues" id="dys" value="dysarthia">
+            <label for="dys">Dysarthia</label><br>
+
+            <input type="radio" name="physical_issues" id="mislim" value="missing limbs">
+            <label for="mislim">Missing Limbs</label><br>
+
+            <input type="radio" name="physical_issues" id="oth" value="other">
+            <label for="oth">Other</label><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="sopr">Enter any Social Problem you Faced?</label>
+          </td>
+          <td>
+            <input type="text" name="social_problems" id="sopr" placeholder="e.g. Bribery">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label>What Type of Survey do you want to take?</label>
+          </td>
+          <td>
+            <input type="radio" name="preferences" id="demo" value="demographic">
+            <label for="demo">Demographic Survey</label><br>
+
+            <input type="radio" name="preferences" id="marres" value="market research">
+            <label for="marres">Market Research Survey</label><br>
+
+            <input type="radio" name="preferences" id="net" value="net promoter">
+            <label for="net">Net Promoter Survey</label><br>
+
+            <input type="radio" name="preferences" id="cussat" value="customer satisfaction">
+            <label for="cussat">Customer Satifaction Survey</label><br>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <labe>When will you be Available for taking the Survey?</label>
+          </td>
+          <td>
+            <input type="radio" name="availability" id="day" value="day">
+            <label for="day">Weekday</label>
+
+            <input type="radio" name="availability" id="end" value="end">
+            <label for="end">Weekend</label>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label>How often do you want to take the Survey in a week?</label>
+          </td>
+          <td>
+            <input type="radio" name="frequency" id="one" value="1">
+            <label for="one">1</label>
+
+            <input type="radio" name="frequency" id="two" value="2">
+            <label for="two">2</label>
+
+            <input type="radio" name="frequency" id="three" value="3">
+            <label for="three">3+</label>
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="rea">Why do you want to take Surveys?</label>
+          </td>
+          <td>
+            <input type="text" name="reasons" id="rea" placeholder="e.g. Money">
+          </td>
+        </tr>
+
+        <tr>
+          <td>
+            <label for="exp">What do you expect from us?</label>
+          </td>
+          <td>
+            <input type="text" name="feedback" id="exp" placeholder="e.g. Good Surveys">
+          </td>
+        </tr>
+      </table>
+        <button type="submit" onClick="verify()" formaction="/" formmethod="post" onSubmit="/thanks">Submit</button>
+
+      </form>
+    </center>
+  </body>
+</html>

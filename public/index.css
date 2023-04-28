@@ -1,0 +1,45 @@
+body {
+  background-image: url('bg.png');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+h1{
+  padding-top: 10px;
+}
+table {
+  background-color:#93EB9B;
+  border: 5px solid black;
+  font-family: 'Open Sans', sans-serif;;
+  border-collapse: collapse;
+}
+
+button  {
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  border-color: black;
+}
+
+input{
+  border-radius: 10px;
+  border: 10px;
+}
+
+textarea{
+  border-radius: 10px;
+  border: 10px;
+}
+select{
+  border-radius: 10px;
+  border: 10px;
+}
+
+tr {
+  border-bottom: 1pt solid black;
+}
+td{
+  padding-bottom: 5px;
+  padding-top: 5px;
+}
